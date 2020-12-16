@@ -29,5 +29,5 @@ function showTime() {
   timeString += ((minutes < 10) ? ":0" : ":") + minutes;
   timeString += ((seconds < 10) ? ":0" : ":") + seconds;
   console.log(timeString);
-  return timeString
+  return timeString;
 }

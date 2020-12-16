@@ -9,15 +9,15 @@ export const locationService = {
 const gLocations = [{
     id: utilService.getId(),
     name: 'Puki Home',
-    lat: 17,
-    lng: 19,
+    lat: 1,
+    lng: 1,
     createdAt: utilService.showTime(),
     updatedAt: utilService.showTime()
 }, {
     id: utilService.getId(),
     name: 'elad Home',
-    lat: 18,
-    lng: 20,
+    lat: 2,
+    lng: 2,
     createdAt: utilService.showTime(),
     updatedAt: utilService.showTime()
 }];
