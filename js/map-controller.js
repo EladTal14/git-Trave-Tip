@@ -31,11 +31,6 @@ window.onload = () => {
         .catch(err => {
             console.log('err!!!', err);
         })
-    document.querySelector('.btn').addEventListener('click', (ev) => {
-        // console.log('Aha!', ev.target);
-        panTo(35.6895, 139.6917);
-    })
-
     onGetUserToGo();
     Promise.all([getUserPosition(), initMap()])
         .then(() => renderTable())
@@ -50,12 +45,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                    center: {
-                        lat,
-                        lng
-                    },
-                    zoom: 15
-                })
+                center: {
+                    lat,
+                    lng
+                },
+                zoom: 15
+            })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -102,7 +97,11 @@ function onGetUserToGo() {
     document.querySelector('.btn-go-to')
         .addEventListener('click', ev => {
             let address = document.querySelector('input').value;
-            console.log(locationService.getUserAddress(address));
+            locationService.getUserAddress(address)
+                .then(res => {
+                    panTo(res.lat, res.lng)
+                    addMarker(res)
+                });
         })
 
 }
