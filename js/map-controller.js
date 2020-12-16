@@ -20,11 +20,17 @@ window.onload = () => {
     getUserPosition()
         .then(pos => {
             console.log('User position is:', pos.coords);
+            document.querySelector('.btn-my-location').addEventListener('click', (ev) => {
+                panTo(pos.coords.latitude, pos.coords.longitude)
+                addMarker({
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude
+                })
+            })
         })
         .catch(err => {
             console.log('err!!!', err);
         })
-
     document.querySelector('.btn').addEventListener('click', (ev) => {
         console.log('Aha!', ev.target);
         panTo(35.6895, 139.6917);

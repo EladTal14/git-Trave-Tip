@@ -7,9 +7,12 @@ export const locationService = {
 }
 
 const gLocations = [{
+    id: utilService.getId(),
+    name: 'Puki Home',
     lat: 17,
     lng: 19,
-    name: 'Puki Home'
+    createdAt: Date.now(),
+    updatedAt: Date.now()
 }];
 
 function getLocations() {
