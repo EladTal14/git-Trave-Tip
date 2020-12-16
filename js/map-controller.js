@@ -99,7 +99,7 @@ function onGetUserToGo() {
     document.querySelector('.btn-go-to')
         .addEventListener('click', ev => {
             let address = document.querySelector('input').value;
-            locationService.getUserAddress(address);
+            console.log(locationService.getUserAddress(address));
         })
 
 }

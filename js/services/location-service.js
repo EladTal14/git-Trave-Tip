@@ -22,12 +22,12 @@ function getLocations() {
 }
 
 function getData(url) {
-    return fetch(url, { mode: 'no-cors' })
-        .then(res => res.json())
+    return axios.get(url)
+        .then(res => res)
 }
 
 function getUserAddress(address) {
-    let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyCDYbjCURs--Lg7QPngiXAUcqumkrIrEYo`;
+    let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDxSbj3Jc5DGF8JSU6w2D2_qqiLb2i1gCE`;
     getData(currUrl).then(res => {
         console.log(res);
         return res;
