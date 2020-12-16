@@ -28,6 +28,5 @@ function showTime() {
   var timeString = "" + ((hours > 12) ? hours - 12 : hours);
   timeString += ((minutes < 10) ? ":0" : ":") + minutes;
   timeString += ((seconds < 10) ? ":0" : ":") + seconds;
-  console.log(timeString);
   return timeString;
 }

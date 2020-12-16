@@ -84,7 +84,7 @@ function getUserPosition() {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI'; //TODO: Enter your API Key
+    const API_KEY = 'AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI'; // Key Elad
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -117,21 +117,30 @@ function renderTable() {
                             <td>${location.createdAt}</td>
                             <td>${location.updatedAt}</td>
                             <td><button class="go-to-btn" data-lng="${location.lng}" data-lat="${location.lat}"">GO</button></td>
-                            <td><button>DELETE</button></td>
+                            <td><button class="delete-btn" data-id="${location.id}">DELETE</button></td>
                         </tr>`
             })
 
             document.querySelector('tbody').innerHTML = strHtmls.join('')
         })
         .then(() => {
-            const elBtns = document.querySelectorAll('.go-to-btn')
-            console.log(elBtns);
-            elBtns.forEach(elBtn => {
-                elBtn.addEventListener('click', function () {
-                    panTo(+elBtn.dataset.lat, +elBtn.dataset.lng)
+            const elDeleteBtns = document.querySelectorAll('.delete-btn')
+            elDeleteBtns.forEach(elDeleteBtn => {
+                elDeleteBtn.addEventListener('click', function () {
+
+                    // locationService.findLocationById(elDeleteBtn.dataset.id)
+                    locationService.removeLocation(elDeleteBtn.dataset.id)
+                    renderTable()
+                })
+            })
+
+            const elGoBtns = document.querySelectorAll('.go-to-btn')
+            elGoBtns.forEach(elGoBtn => {
+                elGoBtn.addEventListener('click', function () {
+                    panTo(+elGoBtn.dataset.lat, +elGoBtn.dataset.lng)
                     addMarker({
-                        lat: +elBtn.dataset.lat,
-                        lng: +elBtn.dataset.lng
+                        lat: +elGoBtn.dataset.lat,
+                        lng: +elGoBtn.dataset.lng
                     })
                 })
             })

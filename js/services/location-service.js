@@ -5,9 +5,10 @@ import {
 export const locationService = {
     getLocations,
     getData,
-    getUserAddress
+    getUserAddress,
+    removeLocation,
 }
-
+const KEY = 'locationsDB'
 const gLocations = [{
     id: utilService.getId(),
     name: 'Puki Home',
@@ -24,6 +25,19 @@ const gLocations = [{
     updatedAt: utilService.showTime()
 }];
 
+function createLocation(name, lat, lng) {
+    const location = {
+        id: utilService.getId(),
+        name,
+        lat,
+        lng,
+        createdAt: utilService.showTime(),
+        updatedAt: utilService.showTime()
+    }
+    gLocations.push(location)
+    saveToStorage
+}
+
 function getLocations() {
     return Promise.resolve(gLocations)
 }
@@ -39,4 +53,14 @@ function getUserAddress(address) {
         console.log(res);
         return res;
     })
+}
+
+function removeLocation(locationToDelId) {
+    let counter = -1
+    gLocations.find(location => {
+        counter++
+        return locationToDelId === location.id
+    })
+    gLocations.splice(counter, 1)
+    utilService.saveToStorage(KEY, gLocations)
 }
