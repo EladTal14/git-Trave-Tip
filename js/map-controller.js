@@ -18,10 +18,6 @@ window.onload = () => {
 
         .then(() => {
             // locationService.createLocations()
-            let coords = checkForLatLngParams();
-            console.log(coords);
-            panTo(+coords.lat, +coords.lng)
-            addMarker(+coords.lat, +coords.lng)
             renderTable()
         })
         .catch(console.log('INIT MAP ERROR'));
@@ -47,9 +43,15 @@ window.onload = () => {
 
 export function initMap(lat = 32.0749831, lng = 34.9120554) {
 
+
     return _connectGoogleApi()
         .then(() => {
             // console.log('google available');
+            let coords = checkForLatLngParams();
+            console.log(coords);
+            lat = +coords.lat;
+            lng = +coords.lng;
+            
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: {
@@ -59,6 +61,7 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
                 zoom: 15
             })
             console.log('Map!', gGoogleMap);
+            
         })
 }
 
