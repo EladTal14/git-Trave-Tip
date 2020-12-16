@@ -9,12 +9,23 @@ var gGoogleMap;
 
 window.onload = () => {
     initMap()
-        .then(() => {
-            addMarker({
-                lat: 32.0749831,
-                lng: 34.9120554
-            });
-        })
+    .then(() => {
+        const coords = checkForLatLngParams();
+        let lat;
+        let lng;
+        if (!coords) {
+            lat = 32.0749831;
+            lng = 34.9120554; 
+        } else {
+            lat = coords.lat;
+            lng = coords.lng;
+        }
+        addMarker({
+            lat: lat,
+            lng: lng
+        });
+    })
+
         .then(() => {
             // locationService.createLocations()
             renderTable()
@@ -48,12 +59,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                    center: {
-                        lat,
-                        lng
-                    },
-                    zoom: 15
-                })
+                center: {
+                    lat,
+                    lng
+                },
+                zoom: 15
+            })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -157,9 +168,34 @@ function onCopyLocation() {
     document.querySelector('.copy-address').addEventListener('click', ev => {
         const addressName = document.querySelector('.chosen-place').innerText;
         let addressLatLng = locationService.getLatLngByName(addressName);
-        console.log(addressLatLng.lat);
-        console.log(addressLatLng.lng);
-        saveAddressForUser()
+        console.log(addressLatLng.lat, addressLatLng.lng);
+        saveAddressForUser(addressLatLng.lat, addressLatLng.lng)
+        alert('Copied successfuly!');
     })
 }
 
+function saveAddressForUser(lat, lng) {
+    let linkToCopy = `https://eladtal14.github.io/git-Trave-Tip/index.html?lat=${lat}&lng=${lng}`;
+    var tempInput = document.createElement("input");
+    tempInput.value = linkToCopy;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+}
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function checkForLatLngParams() {
+    const lat = getParameterByName('lat');
+    const lng = getParameterByName('lng');
+    if (!lat && !lng) return false;
+    return { lat, lng };
+}
