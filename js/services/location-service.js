@@ -50,7 +50,7 @@ function getData(url) {
 function getUserAddress(address) {
     let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI`;
     return getData(currUrl).then(res => {
-        console.log(res)
+        console.log(res.results[0].formatted_address);
         const lat = res.results[0].geometry.location.lat;
         const lng = res.results[0].geometry.location.lng;
         return {

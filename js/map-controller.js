@@ -93,17 +93,16 @@ function _connectGoogleApi() {
 
 
 function onGetUserToGo() {
-
     document.querySelector('.btn-go-to')
         .addEventListener('click', ev => {
             let address = document.querySelector('input').value;
+            if (!address) return;
             locationService.getUserAddress(address)
                 .then(res => {
                     panTo(res.lat, res.lng)
                     addMarker(res)
                 });
-        })
-
+        });
 }
 
 function renderTable() {
