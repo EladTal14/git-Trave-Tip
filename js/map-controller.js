@@ -38,8 +38,9 @@ window.onload = () => {
     onGetUserToGo();
     onCopyLocation();
     // Promise.all([getUserPosition(), initMap()])
+
     const coords = checkForLatLngParams();
-    if (coords) panTo(coords.lat, coords.lng);
+    if (coords) panTo(+coords.lat, +coords.lng);
 }
 
 
