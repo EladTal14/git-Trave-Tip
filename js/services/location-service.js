@@ -44,15 +44,20 @@ function getLocations() {
 
 function getData(url) {
     return axios.get(url)
-        .then(res => res)
+        .then(res => res.data)
 }
 
 function getUserAddress(address) {
     let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI`;
-    getData(currUrl).then(res => {
-        console.log(res);
-        return res;
-    })
+    return getData(currUrl).then(res => {
+        console.log(res)
+        const lat = res.results[0].geometry.location.lat;
+        const lng = res.results[0].geometry.location.lng;
+        return {
+            lat,
+            lng
+        };
+    });
 }
 
 function removeLocation(locationToDelId) {
@@ -63,4 +68,5 @@ function removeLocation(locationToDelId) {
     })
     gLocations.splice(counter, 1)
     utilService.saveToStorage(KEY, gLocations)
+
 }
