@@ -50,12 +50,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: {
-                    lat,
-                    lng
-                },
-                zoom: 15
-            })
+                    center: {
+                        lat,
+                        lng
+                    },
+                    zoom: 15
+                })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -106,6 +106,7 @@ function onGetUserToGo() {
         })
 
 }
+
 function renderTable() {
     locationService.getLocations()
         .then(locations => {
@@ -119,14 +120,20 @@ function renderTable() {
                             <td><button>DELETE</button></td>
                         </tr>`
             })
-            const elBtns = document.querySelectorAll('.go-to-btn')
-            elBtns.forEach(elBtn => {
-                elBtn.addEventListener('click', goToLocation)
-            })
+
             document.querySelector('tbody').innerHTML = strHtmls.join('')
         })
-}
-
-function goToLocation(lat, lng) {
-    panTo(+lat, +lng)
+        .then(() => {
+            const elBtns = document.querySelectorAll('.go-to-btn')
+            console.log(elBtns);
+            elBtns.forEach(elBtn => {
+                elBtn.addEventListener('click', function () {
+                    panTo(+elBtn.dataset.lat, +elBtn.dataset.lng)
+                    addMarker({
+                        lat: +elBtn.dataset.lat,
+                        lng: +elBtn.dataset.lng
+                    })
+                })
+            })
+        })
 }
