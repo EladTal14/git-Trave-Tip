@@ -15,8 +15,11 @@ window.onload = () => {
                 lng: 34.9120554
             });
         })
+        .then(() => {
+            // locationService.createLocations()
+            renderTable()
+        })
         .catch(console.log('INIT MAP ERROR'));
-
     getUserPosition()
         .then(pos => {
             // console.log('User position is:', pos.coords);
@@ -32,25 +35,25 @@ window.onload = () => {
             console.log('err!!!', err);
         })
     onGetUserToGo();
-    Promise.all([getUserPosition(), initMap()])
-        .then(() => renderTable())
+    // Promise.all([getUserPosition(), initMap()])
+
 
 }
 
 
 export function initMap(lat = 32.0749831, lng = 34.9120554) {
-    console.log('InitMap');
+
     return _connectGoogleApi()
         .then(() => {
             // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: {
-                    lat,
-                    lng
-                },
-                zoom: 15
-            })
+                    center: {
+                        lat,
+                        lng
+                    },
+                    zoom: 15
+                })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -97,10 +100,13 @@ function onGetUserToGo() {
     document.querySelector('.btn-go-to')
         .addEventListener('click', ev => {
             let address = document.querySelector('input').value;
+
             locationService.getUserAddress(address)
                 .then(res => {
                     panTo(res.lat, res.lng)
                     addMarker(res)
+                    renderTable()
+                    document.querySelector('input').value = '';
                 });
         })
 
@@ -126,8 +132,6 @@ function renderTable() {
             const elDeleteBtns = document.querySelectorAll('.delete-btn')
             elDeleteBtns.forEach(elDeleteBtn => {
                 elDeleteBtn.addEventListener('click', function () {
-
-                    // locationService.findLocationById(elDeleteBtn.dataset.id)
                     locationService.removeLocation(elDeleteBtn.dataset.id)
                     renderTable()
                 })

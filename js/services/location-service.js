@@ -9,21 +9,25 @@ export const locationService = {
     removeLocation,
 }
 const KEY = 'locationsDB'
-const gLocations = [{
-    id: utilService.getId(),
-    name: 'Puki Home',
-    lat: 1,
-    lng: 1,
-    createdAt: utilService.showTime(),
-    updatedAt: utilService.showTime()
-}, {
-    id: utilService.getId(),
-    name: 'elad Home',
-    lat: 2,
-    lng: 2,
-    createdAt: utilService.showTime(),
-    updatedAt: utilService.showTime()
-}];
+const gLocations = createLocations()
+
+function createLocations() {
+    var locations = utilService.loadFromStorage(KEY)
+    console.log(locations);
+    if (!locations || locations.length === 0) {
+        locations = []
+        locations.push({
+            id: utilService.getId(),
+            name: 'puki house',
+            lat: 18,
+            lng: 18,
+            createdAt: utilService.showTime(),
+            updatedAt: utilService.showTime()
+        })
+    }
+    utilService.saveToStorage(KEY, locations)
+    return locations
+}
 
 function createLocation(name, lat, lng) {
     const location = {
@@ -35,7 +39,7 @@ function createLocation(name, lat, lng) {
         updatedAt: utilService.showTime()
     }
     gLocations.push(location)
-    saveToStorage
+    utilService.saveToStorage(KEY, gLocations)
 }
 
 function getLocations() {
@@ -53,6 +57,7 @@ function getUserAddress(address) {
         console.log(res)
         const lat = res.results[0].geometry.location.lat;
         const lng = res.results[0].geometry.location.lng;
+        createLocation(address, lat, lng)
         return {
             lat,
             lng
