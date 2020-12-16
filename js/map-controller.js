@@ -18,6 +18,10 @@ window.onload = () => {
 
         .then(() => {
             // locationService.createLocations()
+            let coords = checkForLatLngParams();
+            console.log(coords);
+            panTo(+coords.lat, +coords.lng)
+            addMarker(+coords.lat, +coords.lng)
             renderTable()
         })
         .catch(console.log('INIT MAP ERROR'));
@@ -38,13 +42,6 @@ window.onload = () => {
     onGetUserToGo();
     onCopyLocation();
     // Promise.all([getUserPosition(), initMap()])
-
-    const coords = checkForLatLngParams();
-    console.log(coords);
-    if (!coords) {
-        panTo(+coords.lat, +coords.lng)
-        addMarker(+coords.lat, +coords.lng)
-    }
 }
 
 
@@ -55,12 +52,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                    center: {
-                        lat,
-                        lng
-                    },
-                    zoom: 15
-                })
+                center: {
+                    lat,
+                    lng
+                },
+                zoom: 15
+            })
             console.log('Map!', gGoogleMap);
         })
 }
