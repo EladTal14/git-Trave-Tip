@@ -38,8 +38,5 @@ function getUserAddress(address) {
     getData(currUrl).then(res => {
         console.log(res);
         return res;
-    }) 
+    })
 }
-
-
-
