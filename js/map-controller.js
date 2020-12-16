@@ -8,18 +8,7 @@ import {
 var gGoogleMap;
 
 window.onload = () => {
-    const coords = checkForLatLngParams();
-    let lat;
-    let lng;
-    if (!coords) {
-        lat = +coords.lat;
-        lng = +coords.lng;
-    } else {
-        lat = 32.0749831;
-        lng = 34.9120554;
-    }
-    
-    initMap(lat, lng)
+    initMap()
         .then(() => {
             addMarker({
                 lat: 32.0749831,
@@ -49,11 +38,12 @@ window.onload = () => {
     onGetUserToGo();
     onCopyLocation();
     // Promise.all([getUserPosition(), initMap()])
-
+    const coords = checkForLatLngParams();
+    if (coords) panTo(coords.lat, coords.lng);
 }
 
 
-export function initMap(lat, lng) {
+export function initMap(lat = 32.0749831, lng = 34.9120554) {
 
     return _connectGoogleApi()
         .then(() => {
