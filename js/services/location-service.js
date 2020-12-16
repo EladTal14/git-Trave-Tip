@@ -34,7 +34,7 @@ function getData(url) {
 }
 
 function getUserAddress(address) {
-    let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDxSbj3Jc5DGF8JSU6w2D2_qqiLb2i1gCE`;
+    let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI`;
     getData(currUrl).then(res => {
         console.log(res);
         return res;
