@@ -8,21 +8,22 @@ import {
 var gGoogleMap;
 
 window.onload = () => {
-    initMap()
+    const coords = checkForLatLngParams();
+    let lat;
+    let lng;
+    if (!coords) {
+        lat = +coords.lat;
+        lng = +coords.lng;
+    } else {
+        lat = 32.0749831;
+        lng = 34.9120554;
+    }
+    
+    initMap(lat, lng)
         .then(() => {
-            const coords = checkForLatLngParams();
-            let lat;
-            let lng;
-            if (!coords) {
-                lat = 32.0749831;
-                lng = 34.9120554;
-            } else {
-                lat = +coords.lat;
-                lng = +coords.lng;
-            }
             addMarker({
-                lat: lat,
-                lng: lng
+                lat: 32.0749831,
+                lng: 34.9120554
             });
         })
 
@@ -52,7 +53,7 @@ window.onload = () => {
 }
 
 
-export function initMap(lat = 32.0749831, lng = 34.9120554) {
+export function initMap(lat, lng) {
 
     return _connectGoogleApi()
         .then(() => {
@@ -174,6 +175,7 @@ function renderLocationName(addressName) {
 
 function onCopyLocation() {
     document.querySelector('.copy-address').addEventListener('click', ev => {
+        console.log('clicky ckicky clock');
         const addressName = document.querySelector('.chosen-place').innerText;
         let addressLatLng = locationService.getLatLngByName(addressName);
         console.log(addressLatLng.lat, addressLatLng.lng);
