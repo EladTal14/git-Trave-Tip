@@ -107,7 +107,13 @@ function onGetUserToGo() {
                     renderTable()
                     renderLocationName(res.addressName)
                     document.querySelector('input').value = '';
-                });
+                })
+                .catch(() => {
+                    document.querySelector('input').value = 'Address couldn`t be found';
+                    setTimeout(() => {
+                        document.querySelector('input').value = '';
+                    }, 1500);
+                })
         });
 }
 
@@ -120,7 +126,7 @@ function renderTable() {
                             <td>${location.name}</td>
                             <td>${location.createdAt}</td>
                             <td>${location.updatedAt}</td>
-                            <td><button class="go-to-btn" data-lng="${location.lng}" data-lat="${location.lat}"">GO</button></td>
+                            <td><button class="go-to-btn" data-id="${location.id}" data-lng="${location.lng}" data-lat="${location.lat}"">GO</button></td>
                             <td><button class="delete-btn" data-id="${location.id}">DELETE</button></td>
                         </tr>`
             })
@@ -139,6 +145,8 @@ function renderTable() {
             const elGoBtns = document.querySelectorAll('.go-to-btn')
             elGoBtns.forEach(elGoBtn => {
                 elGoBtn.addEventListener('click', function () {
+                    locationService.updateTimeById(elGoBtn.dataset.id)
+                    renderTable()
                     panTo(+elGoBtn.dataset.lat, +elGoBtn.dataset.lng)
                     addMarker({
                         lat: +elGoBtn.dataset.lat,
@@ -162,4 +170,3 @@ function onCopyLocation() {
         saveAddressForUser()
     })
 }
-
