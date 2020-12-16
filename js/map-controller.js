@@ -17,8 +17,8 @@ window.onload = () => {
                 lat = 32.0749831;
                 lng = 34.9120554;
             } else {
-                lat = coords.lat;
-                lng = coords.lng;
+                lat = +coords.lat;
+                lng = +coords.lng;
             }
             addMarker({
                 lat: lat,
