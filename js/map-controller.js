@@ -1,5 +1,6 @@
-
-import {locationService} from './services/location-service.js'
+import {
+    locationService
+} from './services/location-service.js'
 
 
 console.log('locationService', locationService);
@@ -9,7 +10,10 @@ var gGoogleMap;
 window.onload = () => {
     initMap()
         .then(() => {
-            addMarker({ lat: 32.0749831, lng: 34.9120554 });
+            addMarker({
+                lat: 32.0749831,
+                lng: 34.9120554
+            });
         })
         .catch(console.log('INIT MAP ERROR'));
 
@@ -35,9 +39,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: { lat, lng },
-                zoom: 15
-            })
+                    center: {
+                        lat,
+                        lng
+                    },
+                    zoom: 15
+                })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -66,7 +73,7 @@ function getUserPosition() {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = ''; //TODO: Enter your API Key
+    const API_KEY = 'AIzaSyCDYbjCURs--Lg7QPngiXAUcqumkrIrEYo'; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -77,6 +84,3 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
-
-
-
