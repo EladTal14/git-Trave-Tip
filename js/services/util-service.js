@@ -1,7 +1,8 @@
 export const utilService = {
   saveToStorage,
   loadFromStorage,
-  getId
+  getId,
+  showTime
 }
 
 
@@ -17,4 +18,16 @@ function loadFromStorage(key) {
 
 function getId() {
   return Math.random().toString(36).substr(2, 9)
+}
+
+function showTime() {
+  var timeNow = new Date();
+  var hours = timeNow.getHours();
+  var minutes = timeNow.getMinutes();
+  var seconds = timeNow.getSeconds();
+  var timeString = "" + ((hours > 12) ? hours - 12 : hours);
+  timeString += ((minutes < 10) ? ":0" : ":") + minutes;
+  timeString += ((seconds < 10) ? ":0" : ":") + seconds;
+  console.log(timeString);
+  return timeString
 }

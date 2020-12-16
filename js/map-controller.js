@@ -3,7 +3,7 @@ import {
 } from './services/location-service.js'
 
 
-console.log('locationService', locationService);
+// console.log('locationService', locationService);
 
 var gGoogleMap;
 
@@ -19,7 +19,7 @@ window.onload = () => {
 
     getUserPosition()
         .then(pos => {
-            console.log('User position is:', pos.coords);
+            // console.log('User position is:', pos.coords);
             document.querySelector('.btn-my-location').addEventListener('click', (ev) => {
                 panTo(pos.coords.latitude, pos.coords.longitude)
                 addMarker({
@@ -32,11 +32,14 @@ window.onload = () => {
             console.log('err!!!', err);
         })
     document.querySelector('.btn').addEventListener('click', (ev) => {
-        console.log('Aha!', ev.target);
+        // console.log('Aha!', ev.target);
         panTo(35.6895, 139.6917);
     })
 
     onGetUserToGo();
+    Promise.all([getUserPosition(), initMap()])
+        .then(() => renderTable())
+
 }
 
 
@@ -44,7 +47,7 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
-            console.log('google available');
+            // console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: {
@@ -72,7 +75,7 @@ function panTo(lat, lng) {
 }
 
 function getUserPosition() {
-    console.log('Getting Pos');
+    // console.log('Getting Pos');
     return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
@@ -81,7 +84,7 @@ function getUserPosition() {
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
-    const API_KEY = 'AIzaSyCDYbjCURs--Lg7QPngiXAUcqumkrIrEYo'; //TODO: Enter your API Key
+    const API_KEY = 'AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI'; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
     elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
     elGoogleApi.async = true;
@@ -102,4 +105,28 @@ function onGetUserToGo() {
             console.log(locationService.getUserAddress(address));
         })
 
+}
+function renderTable() {
+    locationService.getLocations()
+        .then(locations => {
+            const strHtmls = locations.map(location => {
+
+                return `<tr>
+                            <td>${location.name}</td>
+                            <td>${location.createdAt}</td>
+                            <td>${location.updatedAt}</td>
+                            <td><button class="go-to-btn" data-lng="${location.lng}" data-lat="${location.lat}"">GO</button></td>
+                            <td><button>DELETE</button></td>
+                        </tr>`
+            })
+            const elBtns = document.querySelectorAll('.go-to-btn')
+            elBtns.forEach(elBtn => {
+                elBtn.addEventListener('click', goToLocation)
+            })
+            document.querySelector('tbody').innerHTML = strHtmls.join('')
+        })
+}
+
+function goToLocation(lat, lng) {
+    panTo(+lat, +lng)
 }
