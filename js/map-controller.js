@@ -20,15 +20,23 @@ window.onload = () => {
     getUserPosition()
         .then(pos => {
             console.log('User position is:', pos.coords);
+            document.querySelector('.btn-my-location').addEventListener('click', (ev) => {
+                panTo(pos.coords.latitude, pos.coords.longitude)
+                addMarker({
+                    lat: pos.coords.latitude,
+                    lng: pos.coords.longitude
+                })
+            })
         })
         .catch(err => {
             console.log('err!!!', err);
         })
-
     document.querySelector('.btn').addEventListener('click', (ev) => {
         console.log('Aha!', ev.target);
         panTo(35.6895, 139.6917);
     })
+
+    onGetUserToGo();
 }
 
 
@@ -39,12 +47,12 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
             console.log('google available');
             gGoogleMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                    center: {
-                        lat,
-                        lng
-                    },
-                    zoom: 15
-                })
+                center: {
+                    lat,
+                    lng
+                },
+                zoom: 15
+            })
             console.log('Map!', gGoogleMap);
         })
 }
@@ -83,4 +91,15 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+
+function onGetUserToGo() {
+
+    document.querySelector('.btn-go-to')
+        .addEventListener('click', ev => {
+            let address = document.querySelector('input').value;
+            locationService.getUserAddress(address);
+        })
+
 }
