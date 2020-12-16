@@ -7,6 +7,7 @@ export const locationService = {
     getData,
     getUserAddress,
     removeLocation,
+    getLatLngByName
 }
 const KEY = 'locationsDB'
 const gLocations = createLocations()
@@ -54,13 +55,16 @@ function getData(url) {
 function getUserAddress(address) {
     let currUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBvWXXK1AOaM6MXDXEfNfdo1XbAZ5FMrjI`;
     return getData(currUrl).then(res => {
-        console.log(res.results[0].formatted_address);
+        const addressName = res.results[0].formatted_address;
         const lat = res.results[0].geometry.location.lat;
         const lng = res.results[0].geometry.location.lng;
-        createLocation(address, lat, lng)
+        createLocation(addressName, lat, lng)
         return {
-            lat,
-            lng
+            coords: {
+                lat,
+                lng
+            },
+            addressName
         };
     });
 }
@@ -75,3 +79,11 @@ function removeLocation(locationToDelId) {
     utilService.saveToStorage(KEY, gLocations)
 
 }
+
+
+function getLatLngByName(addressName) {
+    return gLocations.find(location => {
+        if (location.name === addressName) return location;
+    })
+}
+

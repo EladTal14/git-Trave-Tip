@@ -35,8 +35,8 @@ window.onload = () => {
             console.log('err!!!', err);
         })
     onGetUserToGo();
+    onCopyLocation();
     // Promise.all([getUserPosition(), initMap()])
-
 
 }
 
@@ -102,9 +102,10 @@ function onGetUserToGo() {
             if (!address) return;
             locationService.getUserAddress(address)
                 .then(res => {
-                    panTo(res.lat, res.lng)
-                    addMarker(res)
+                    panTo(res.coords.lat, res.coords.lng)
+                    addMarker(res.coords)
                     renderTable()
+                    renderLocationName(res.addressName)
                     document.querySelector('input').value = '';
                 });
         });
@@ -147,3 +148,18 @@ function renderTable() {
             })
         })
 }
+
+function renderLocationName(addressName) {
+    document.querySelector('.chosen-place').innerText = addressName;
+}
+
+function onCopyLocation() {
+    document.querySelector('.copy-address').addEventListener('click', ev => {
+        const addressName = document.querySelector('.chosen-place').innerText;
+        let addressLatLng = locationService.getLatLngByName(addressName);
+        console.log(addressLatLng.lat);
+        console.log(addressLatLng.lng);
+        saveAddressForUser()
+    })
+}
+
