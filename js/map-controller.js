@@ -35,6 +35,8 @@ window.onload = () => {
         // console.log('Aha!', ev.target);
         panTo(35.6895, 139.6917);
     })
+
+    onGetUserToGo();
     Promise.all([getUserPosition(), initMap()])
         .then(() => renderTable())
 
@@ -54,7 +56,7 @@ export function initMap(lat = 32.0749831, lng = 34.9120554) {
                     },
                     zoom: 15
                 })
-            // console.log('Map!', gGoogleMap);
+            console.log('Map!', gGoogleMap);
         })
 }
 
@@ -92,6 +94,17 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+
+function onGetUserToGo() {
+
+    document.querySelector('.btn-go-to')
+        .addEventListener('click', ev => {
+            let address = document.querySelector('input').value;
+            console.log(locationService.getUserAddress(address));
+        })
+
 }
 
 function renderTable() {
