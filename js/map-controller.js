@@ -40,8 +40,8 @@ window.onload = () => {
     // Promise.all([getUserPosition(), initMap()])
 
     const coords = checkForLatLngParams();
-    if (coords) {
-        console.log(coords);
+    console.log(coords);
+    if (!coords) {
         panTo(+coords.lat, +coords.lng)
         addMarker(+coords.lat, +coords.lng)
     }
